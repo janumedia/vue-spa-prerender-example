@@ -2,11 +2,15 @@
 
 This repo using Vue-Cli-3 with some modifications.
 
-## Built Components
+### Built Components
 
 TileGrid, ChessGrid, ListBox, LazyImage, Google Map, Google Place Reviews
 
-## Demo with NuxtJS
+### Live Demo
+
+Live [demo](https://vue-web-components.netlify.com/)
+
+### Demo with NuxtJS
 
 See implementation with NuxtJS [here](https://github.com/janumedia/nuxt-web-template)
 
