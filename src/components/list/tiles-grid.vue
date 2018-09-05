@@ -102,7 +102,7 @@ export default {
             });
         },
         adjustSize() {
-            if(this.thumbnailMode) return;
+            //if(this.thumbnailMode) return;
             let tiles = this.$el.querySelectorAll(".tile");
             if(tiles.length == 0) return
             let buttonGroup = this.$el.querySelectorAll(".button-group");
