@@ -6,6 +6,10 @@ This repo using Vue-Cli-3 with some modifications.
 
 TileGrid, ChessGrid, ListBox, LazyImage, Google Map, Google Place Reviews
 
+## Demo with NuxtJS
+
+See implementation with NuxtJS [here](https://github.com/janumedia/nuxt-web-template)
+
 ## Project setup
 ```
 yarn install
