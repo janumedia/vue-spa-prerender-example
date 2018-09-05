@@ -31,6 +31,7 @@ export default {
   },
   methods: {
     setData(data) {
+      window.scrollTo(0, 0);
       Object.keys(data).map(key => this[key] = data[key])
     },
     resetData() {
@@ -43,7 +44,6 @@ export default {
   async beforeRouteUpdate(to, from, next) {
     this.resetData();//reset data allow data refresh
     try {
-      window.scrollTo(0, 0);
       const data = await getData(to);
       this.setData(data);
       next();
