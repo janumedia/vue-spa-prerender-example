@@ -1,0 +1,20 @@
+{
+    "title": "Google API",
+    "desc": "Google Map and Google Place Review components",
+    "metaImage": "https://firebasestorage.googleapis.com/v0/b/nuxt-web-template.appspot.com/o/slides%2Fcrystal-bay-beach-2.jpg?alt=media&token=be8ffb8f-17e9-4b85-bf4a-9dff7f38348a",
+    "body": [
+        {
+            "name": "Google-Map",
+            "googleMap": {
+                "lat": -8.733426,
+                "long": 115.4470798
+            }
+        },
+        {
+            "name": "Google-Review",
+            "googleReview": {
+                "placeID": "ChIJPeFviSBH0i0R0h1hnHjxmFw"
+            }
+        }
+    ]
+}
