@@ -14,23 +14,19 @@ export default new Router({
       name: '404',
       meta: { layout: 'no-nav' },
       props: true,
-      component: () => import('./views/404.vue')
+      // route level code-splitting
+      // which is lazy-loaded when the route is visited.
+      component: () => import(/* webpackChunkName: "404" */ './views/404.vue')
     },
     {
       path: '/:category/:id',
       name: 'category-id',
-      // route level code-splitting
-      // this generates a separate chunk (about.[hash].js) for this route
-      // which is lazy-loaded when the route is visited.
-      component: () => import(/* webpackChunkName: "about" */ './views/_category/_id.vue')
+      component: () => import(/* webpackChunkName: "page" */ './views/_category/_id.vue')
     },
     {
       path: '/:category',
       name: 'category',
-      // route level code-splitting
-      // this generates a separate chunk (about.[hash].js) for this route
-      // which is lazy-loaded when the route is visited.
-      component: () => import(/* webpackChunkName: "about" */ './views/_category/_id.vue')
+      component: () => import(/* webpackChunkName: "page" */ './views/_category/_id.vue')
     },
     {
       path: '/',
@@ -40,7 +36,7 @@ export default new Router({
     {
       path: '*',
       meta: { layout: 'no-nav' },
-      component: () => import('./views/404.vue')
+      component: () => import(/* webpackChunkName: "404" */ './views/404.vue')
     }
   ]
 })

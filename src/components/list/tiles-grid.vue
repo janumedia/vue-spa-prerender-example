@@ -2,19 +2,12 @@
     <div class="tiles-container">
         <ul :class="`tiles tiles--col${ numColumns > 3 ? 3 : numColumns }`">
             <li v-for="(item, index) in list" :class="generateListClass(index)" :key="index">
-                <linked-image v-if="item.url"
+                <linked-image
                     :src="item.img"
                     :url="item.url"
                     :title="item.name"
                     :square="square"
                     :thumbnailMode="thumbnailMode"
-                    @onReady="imageReady"
-                    @onLoaded="imageReady"
-                />
-                <lazy-image v-else
-                    :src="item.img"
-                    :title="item.name"
-                    :square="square"
                     @onReady="imageReady"
                     @onLoaded="imageReady"
                 />
@@ -35,11 +28,10 @@
 <script>
 import {registerListener, unRegisterListener, inViewPort, aboveViewPort} from "@/assets/js/events/events"
 import Button from "@/components/core/Button"
-import LazyImage from "@/components/core/LazyImage"
 import LinkedImage from "@/components/core/LinkedImage"
 export default {
     components: {
-        Button, LazyImage, LinkedImage
+        Button, LinkedImage
     },
     props: {
         list: {

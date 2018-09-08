@@ -1,8 +1,4 @@
 <template>
-    <!--section v-if="list" :class="!$store.state.pageData.layout ? 'section-body' : ''">
-        <div v-if="!$store.state.pageData.layout && $store.state.pageData.title" class="preheader-hidden">
-            <h2>{{ $store.state.pageData.title }}</h2>
-        </div-->
     <section>
         <div v-for="(item, index) in list" :key="`b_${index}`" :class="index > 0? 'next' : ''">
             <div v-if="item.name" class="preheader" style="margin-top: 40px">
@@ -10,7 +6,7 @@
             </div>
             <chess-grid v-if="item.chessGrid" :list="item.chessGrid"/>
             <tiles-grid v-if="item.tilesGrid" :list="item.tilesGrid" :square="item.square" :thumbnailMode="item.thumbnailMode" :numColumns="item.numColumns"/>
-            <listBox v-if="item.listBox" :list="item.listBox"/>
+            <list-box v-if="item.listBox" :list="item.listBox"/>
             <div v-if="item.slides">
                 <slide-images :list="item.slides"/>
             </div>
@@ -34,21 +30,20 @@
     </section>
 </template>
 <script>
+
 import Button from "@/components/core/Button"
 import LazyImage from "@/components/core/LazyImage"
 import Table from "@/components/core/Table"
-import chessGrid from '@/components/list/chess-grid'
-import tilesGrid from '@/components/list/tiles-grid'
-import listBox from '@/components/list/list-box'
-import slideImages from "@/components/list/slide-images"
-import googleMap from "@/components/vendor/google-map"
-import googleReview from '@/components/vendor/google-review'
 
 export default {
     components: {
         Button, LazyImage, Table,
-        chessGrid, tilesGrid, listBox, slideImages,
-        googleMap, googleReview
+        "chess-grid": () => import('@/components/list/chess-grid'),
+        "tiles-grid": () => import('@/components/list/tiles-grid'),
+        "list-box": () => import('@/components/list/list-box'),
+        "slide-images": () => import('@/components/list/slide-images'),
+        "google-map": () => import('@/components/vendor/google-map'),
+        "google-review": () => import('@/components/vendor/google-review')
     },
     props: {
         list: { type: Array }

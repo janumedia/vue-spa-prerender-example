@@ -1,4 +1,3 @@
-import {mapState} from 'vuex'
 import axios from 'axios'
 import Body from '@/components/body.vue'
 import Extras from '@/components/extras.vue'

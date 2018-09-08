@@ -66,13 +66,13 @@ import {registerListener, unRegisterListener, inViewPort} from "@/assets/js/even
 import Button from "@/components/core/Button"
 import LazyImage from "@/components/core/LazyImage"
 import Table from "@/components/core/Table"
-import slideImages from "@/components/list/slide-images"
-import googleMap from "@/components/vendor/google-map"
-import googleReview from "@/components/vendor/google-review"
 export default {
     props: ["list", "last"],
     components: {
-        Button, LazyImage, Table, slideImages, googleMap, googleReview
+        Button, LazyImage, Table,
+        "slide-images": () => import("@/components/list/slide-images"),
+        "google-map": () => import("@/components/vendor/google-map"),
+        "google-review": () => import("@/components/vendor/google-review")
     },
     data() {
         return {

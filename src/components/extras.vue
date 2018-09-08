@@ -20,14 +20,13 @@
 </template>
 <script>
 import Button from "@/components/core/Button"
-import slideImages from "@/components/list/slide-images"
-import googleMap from "@/components/vendor/google-map"
-import googleReview from '@/components/vendor/google-review'
 
 export default {
     components: {
-        Button, slideImages,
-        googleMap, googleReview
+        Button,
+        "slide-images": () => import('@/components/list/slide-images'),
+        "google-map": () => import('@/components/vendor/google-map'),
+        "google-review": () => import('@/components/vendor/google-review')
     },
     props: {
         list: { type: Array }
