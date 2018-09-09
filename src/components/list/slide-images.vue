@@ -4,7 +4,7 @@
             <lazy-image 
                 :src="slide.img.indexOf('http') > -1 ? slide.img : slide.img" 
                 :title="(slide.name ? slide.name : 'slide')"
-                @onLoaded="imageReady"
+                @onLoaded="onImageLoaded"
             />
             <p v-if="slide.name || slide.credit">{{ slide.name }}{{ slide.credit ? `${slide.name ? ', ' : ''}credit by ${slide.credit}` : ''}}</p>
             <p v-else-if="list.find(slide =>slide.credit)">&nbsp;</p>
@@ -12,13 +12,16 @@
     </div>
 </template>
 <script>
-import $ from 'jquery'
+import {tns} from '../../../node_modules/tiny-slider/src/tiny-slider'
 import LazyImage from "@/components/core/LazyImage"
 import {registerListener, unRegisterListener, inViewPort} from "@/assets/js/events/events"
 
 const onScroll = () => {
     registeredComponent.map(component => {
-        if(component.slick) component.slick.slick(inViewPort(component.$el) ? "slickPlay" : "slickPause")
+        if(component.tinySlider) {
+            if(inViewPort(component.$el)) component.tinySlider.play();
+            else component.tinySlider.pause();
+        }
     })
 }
 
@@ -53,123 +56,135 @@ export default {
     data() {
         return {
             placeHolder: "/images/assets/3x2-placeholder.svg",
-            slick: null,
-            sliding: false
+            sliding: false,
+            tinySlider: null
         }
     },
     methods: {
-        imageReady(el) {
-            this.slick.slick(inViewPort(el.$el) ? 'slickPlay': 'slickPause');   
+        onImageLoaded(el) {
+            if(inViewPort(el.$el)) this.tinySlider.play();
+            else this.tinySlider.pause();
+        },
+        initSlider() {
+            this.tinySlider = tns({
+                container: this.$el,//'.slide-images',
+                autoplay: true,
+                nav: false,
+                controls: true,
+                arrowKeys: true,
+                mouseDrag: true,
+                autoplayTimeout: 8000 
+            });
+            this.tinySlider.events.on('indexChanged', this.slideIndexChange);
+            this.tinySlider.pause();
+            //load image from first active slide
+            const activeSlide = this.tinySlider.getInfo().container.querySelector('.tns-slide-active');
+            LazyImage.loadImage(activeSlide.querySelector('img'));
+        },
+        slideIndexChange(info) {
+            const img = info.slideItems[info.index].querySelector('img');
+            const src = img.getAttribute('data-src');
+            if(src) {
+                this.tinySlider.pause();
+                LazyImage.loadImage(img);
+            } else {
+                this.tinySlider.play();
+            }
         }
     },
     mounted() {
-        //load slick-corousel here to wait window loaded
-        require("slick-carousel")
-        //start slick
-        this.slick = $(this.$el);
-        this.slick.on('beforeChange', (e, slick, currentSlide, nextSlide) => {
-            const img = slick.$slides[nextSlide].querySelector('img');
-            const src = img.getAttribute('data-src');
-            if(src) {
-                setTimeout(() => this.slick.slick('slickPause'));
-                LazyImage.loadImage(img);
-            }
-        });
-
-        this.slick.slick({
-            infinite: false,//true,
-            //arrows: true,
-            //adaptiveHeight: true,
-            lazyLoad: 'ondemand',//'progressive',
-            autoplay: true,
-            autoplaySpeed: 6000,
-            //useTransform: true,
-            //cssEase: 'cubic-bezier(0.770, 0.000, 0.175, 1.000)'
-        });
         //register scroll event
         initScrollListener(this);
+        //call initSlider after next tick
+        setTimeout(this.initSlider);
     },
     beforeDestroy() {
+        if(this.tinySlider) {
+            this.tinySlider.events.off('indexChanged', this.slideIndexChange);
+            this.tinySlider.destroy();
+        }
         dispose(this);
     }
 }
 </script>
 <style lang="scss">
-@import url('https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.min.css');
+@import url('https://cdnjs.cloudflare.com/ajax/libs/tiny-slider/2.8.6/tiny-slider.css');
+
+.tns-outer {
+    position: relative;
+    img {
+        width: 100%;
+    }
+    > button {
+        display: none;
+    }
+    &:hover .tns-controls > button {
+        display: inline;
+    }
+}
+
+.tns-controls  {
+    > button {
+        font-size: 0;
+        line-height: 0;
+
+        position: absolute;
+        top: calc(50% - 40px);
+
+        display: none;
+
+        width: 40px;
+        height: 40px;
+        padding: 0;
+        -webkit-transform: translate(0, -50%);
+        -ms-transform: translate(0, -50%);
+        transform: translate(0, -50%);
+
+        cursor: pointer;
+
+        color: transparent;
+        border: none;
+        outline: none;
+        background-color: rgba(52, 44, 44, 0.4);
+        opacity: 0.6;
+
+        z-index: 1;
+
+        &:hover {
+            background-color: rgba(52, 44, 44, 0.6);
+        }
+    }
+    
+    > button:first-child {
+        left: 0px;
+        background-image: url("/images/assets/icon-expand-white.svg");
+        background-size: cover;
+        -webkit-transform: rotate(90deg);
+        -moz-transform: rotate(90deg);
+        -ms-transform: rotate(90deg);
+        -o-transform: rotate(90deg);
+        transform: rotate(90deg);
+    }
+
+    > button:nth-child(2){
+        right: 0px;
+        background-image: url("/images/assets/icon-expand-white.svg");
+        background-size: cover;
+        -webkit-transform: rotate(-90deg);
+        -moz-transform: rotate(-90deg);
+        -ms-transform: rotate(-90deg);
+        -o-transform: rotate(-90deg);
+        transform: rotate(-90deg);
+    }
+}
+
 .slide-images {
     p {
         text-align: left;
-        padding-top: 8px;
     }
     img {
         width: 100%;
     }
 }
 
-// display rows only when image hover //
-.slick-slider .slick-arrow {
-    display: none !important;
-}
-.slick-slider:hover .slick-arrow {
-    display: inline !important;
-}
-// Arrows //
-.slick-prev,
-.slick-next
-{
-    font-size: 0;
-    line-height: 0;
-
-    position: absolute;
-    top: calc(50% - 40px);
-
-    display: block;
-
-    width: 40px;
-    height: 40px;
-    padding: 0;
-    -webkit-transform: translate(0, -50%);
-    -ms-transform: translate(0, -50%);
-    transform: translate(0, -50%);
-
-    cursor: pointer;
-
-    color: transparent;
-    border: none;
-    outline: none;
-    background-color: rgba(52, 44, 44, 0.4);
-    opacity: 0.6;
-
-    z-index: 1;
-}
-.slick-prev:hover,
-.slick-next:hover
-{
-    background-color: rgba(52, 44, 44, 0.6);
-}
-.slick-prev
-{
-    left: 0px;
-    background-image: url("/images/assets/icon-expand-white.svg");
-    background-size: cover;
-    -webkit-transform: rotate(90deg);
-    -moz-transform: rotate(90deg);
-    -ms-transform: rotate(90deg);
-    -o-transform: rotate(90deg);
-    transform: rotate(90deg);
-}
-.slick-next
-{
-    right: 0px;
-    background-image: url("/images/assets/icon-expand-white.svg");
-    background-size: cover;
-    -webkit-transform: rotate(-90deg);
-    -moz-transform: rotate(-90deg);
-    -ms-transform: rotate(-90deg);
-    -o-transform: rotate(-90deg);
-    transform: rotate(-90deg);
-}
-.slick-slider img {
-    width: 100%;
-}
 </style>
