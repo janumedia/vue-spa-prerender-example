@@ -1,5 +1,5 @@
 <template>
-    <div id="google-review">
+    <div class="google-review">
         <div v-for="(item, index) in reviews" :key="index" class="google-review__item">
             <div class="google-review-meta">
                 <p class="google-review__text">{{ item.text }}</p>
@@ -23,7 +23,7 @@
 <script>
 import {mapState} from "vuex"
 import Loader from "@/assets/js/utils/script-loader"
-import $ from "jquery"
+import Utils from "@/assets/js/utils/utils"
 import {registerListener, unRegisterListener, inViewPort} from "@/assets/js/events/events"
 
 export default {
@@ -61,20 +61,18 @@ export default {
         startSlide() {
             if(this.intervalID) return;
             if(this.$el.querySelectorAll(".google-review__item").length < 2) return;
-            let text = this.$el.querySelector(".google-review__text").textContent;
+            let el = this.$el.querySelector(".google-review__item");
+            let text = el.querySelector(".google-review__text").textContent;
             let totalWords = text ? text.split(" ").length : 1;
             // average reading speed 130 words per minute
             let delay = totalWords / 130 * 60 * 1000;    
-            this.intervalID = setTimeout(() => {
-                $("#google-review > div:first")
-                .fadeOut(1000)
-                .next()
-                .fadeIn(1000)
-                .end()
-                .appendTo("#google-review");
+            this.intervalID = setTimeout(async () => {
+                Utils.fadeIn(el.nextSibling, 50);
+                await Utils.fadeOut(el, true, 50);
+                this.$el.appendChild(el);
                 this.intervalID = null;
                 this.startSlide();
-            }, delay * 1.5); //extra delay 1.5x from average
+            }, delay * 1);
             
         },
         onScroll() {
@@ -91,6 +89,8 @@ export default {
         registerListener("scroll", this.onScroll);
     },
     beforeDestroy(){
+        clearTimeout(this.intervalID);
+        this.intervalID = null;
         unRegisterListener("scroll", this.onScroll);
     }
 }
@@ -98,21 +98,19 @@ export default {
 <style lang="scss" scoped>
 @import url('https://fonts.googleapis.com/css?family=Fauna+One');
 
-#google-review {
+.google-review {
     position: relative;
     overflow: hidden;
     width: 100%;
     margin: 0;
     padding: 0;
-}
-
-.google-review {
+    
     &__item {
         position: absolute;
         left: 0;
         top: 0;
         width: 100%;
-        padding: 20px;
+        padding: 20px 0;
         text-align: center;
         display: none;
         &:first-child {

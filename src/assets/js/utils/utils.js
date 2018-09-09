@@ -15,9 +15,9 @@ export default {
     setOpacity(el, value) {
         if(el) el.style.opacity = value;
     }, 
-    fadeOut(el, doneRemoveAfterDone) {
+    fadeOut(el, doneRemoveAfterDone, duration) {
         el.style.opacity = el.style.opacity || 1;
-        clearTimeout(intervalData[el]);
+        clearTimeout(intervalData[el.innerHTML]);
         return new Promise((resolve) => {
             (function fade() {
                 if((el.style.opacity -= .1) < 0)
@@ -26,15 +26,15 @@ export default {
                     resolve();
                 } else 
                 {
-                    intervalData[el] = setTimeout(fade, 20);
+                    intervalData[el.innerHTML] = setTimeout(fade, duration || 20);
                 }
             })();
         })
     },
-    fadeIn(el) {
-        if(el.style.display == "none") el.style.display = "block";
+    fadeIn(el, duration) {
+        if(!el.style.display || el.style.display == "none") el.style.display = "block";
         el.style.opacity = el.style.opacity || 0;
-        clearTimeout(intervalData[el]);
+        clearTimeout(intervalData[el.innerHTML]);
         let opacity = 0;
         return new Promise((resolve) => {
             (function fade() {
@@ -45,7 +45,7 @@ export default {
                 } else 
                 {
                     el.style.opacity = opacity;
-                    intervalData[el] = setTimeout(fade, 20);
+                    intervalData[el.innerHTML] = setTimeout(fade, duration || 20);
                 }
             })();
         })
