@@ -26,21 +26,26 @@ const loadImage = (img, index) => {
             onCSSTransitionEnd(img, () => {
                 parentElementStyle.backgroundImage = `url(${img.src})`;//"";
                 img.className = "done";
-                if(component) component.imageLoaded(index);
+                if(components) components.map(component => {
+                    const nextImg = component.$el.querySelector('img[data-src]');
+                    //load others with the same image src
+                    if(nextImg) nextImg.src = src;
+                    component.imageLoaded(index);
+                });
             });
             img.onCSS;
             img.className = "image-loaded";
         }
     }
     img.onerror = () => {
-        if(component) component.imageError(index);
+        if(components) components.map(component => component.imageError(index));
         img.src = placeHolder;//parentElementStyle.backgroundImage.replace(/(url\(|\)|")/g, '');
     }
     img.className = "image-loading";
     img.removeAttribute("data-src");
 
-    const component = registeredComponent.find(item => item.src == src);
-    if(component) component.imageReady(index);
+    const components = registeredComponent.filter(item => item.src == src);
+    if(components) components.map(component => component.imageReady(index));
 
     img.src = src;
 }
@@ -111,9 +116,11 @@ export default {
         },
         imageLoaded(index) {
             this.$emit('onLoaded', this, index);
+            dispose(this);
         },
         imageError(index) {
             this.$emit('onError', this, index);
+            dispose(this);
         }
     },
     beforeCreate() {

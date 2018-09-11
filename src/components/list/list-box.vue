@@ -91,6 +91,8 @@ export default {
         },
         onScroll() {
             let items = this.$el.querySelectorAll(".list-box__item--hide");
+            console.log(items.length);
+            if(items.length <= 0) unRegisterListener("scroll", this.onScroll);
             [].slice.call(items).map((item, index) => {
                 if(inViewPort(item, 50)) {
                     setTimeout(() => {

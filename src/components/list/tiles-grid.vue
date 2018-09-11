@@ -76,6 +76,7 @@ export default {
         onScroll() {
             if(!inViewPort(this.$el)) return;
             const tiles = this.$el.querySelectorAll(".tile--hide");
+            if(tiles.length <= 0) unRegisterListener("scroll", this.onScroll);
             //process items in visible area
             [].slice.call(tiles).filter(item => {
                 return inViewPort(item, 50)
