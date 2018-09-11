@@ -6,7 +6,7 @@
                 :title="(slide.name ? slide.name : 'slide')"
                 @onLoaded="onImageLoaded"
             />
-            <p v-if="slide.name || slide.credit">{{ slide.name }}{{ slide.credit ? `${slide.name ? ', ' : ''}credit by ${slide.credit}` : ''}}</p>
+            <p v-if="slide.name || slide.credit" class="hide">{{ slide.name }}{{ slide.credit ? `${slide.name ? ', ' : ''}credit by ${slide.credit}` : ''}}</p>
             <p v-else-if="list.find(slide =>slide.credit)">&nbsp;</p>
         </div>   
     </div>
@@ -64,6 +64,8 @@ export default {
         onImageLoaded(el) {
             if(inViewPort(el.$el)) this.tinySlider.play();
             else this.tinySlider.pause();
+            //show info
+            if(el.$el.nextSibling) el.$el.nextSibling.classList.remove("hide");
         },
         initSlider() {
             this.tinySlider = tns({
@@ -181,6 +183,10 @@ export default {
 .slide-images {
     p {
         text-align: left;
+        transition: opacity 0.5s;
+        &.hide {
+            opacity: 0;
+        }
     }
     img {
         width: 100%;
