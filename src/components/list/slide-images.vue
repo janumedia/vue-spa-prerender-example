@@ -65,7 +65,7 @@ export default {
             if(inViewPort(el.$el)) this.tinySlider.play();
             else this.tinySlider.pause();
             //show info
-            if(el.$el.nextSibling) el.$el.nextSibling.classList.remove("hide");
+            if(el.$el.nextSibling && el.$el.nextSibling.classList) el.$el.nextSibling.classList.remove("hide");
         },
         initSlider() {
             this.tinySlider = tns({
