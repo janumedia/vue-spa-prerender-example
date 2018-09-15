@@ -1,6 +1,11 @@
 {
-  "name": "vue-example-05",
+  "name": "vue-web-components",
+  "description": "Vue Web Components Example based on Vue-CLI-3",
   "version": "0.1.0",
+  "author": {
+    "name": "I Nengah Januartha",
+    "email": "janumedia@gmail.com"
+  },
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve",
