@@ -10,7 +10,7 @@
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
-    "start": "serve",
+    "start": "yarn serve",
     "test:unit": "vue-cli-service test:unit"
   },
   "dependencies": {
