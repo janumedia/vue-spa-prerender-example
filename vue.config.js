@@ -7,7 +7,10 @@ module.exports = {
             plugins: [
                 new PrerenderSPAPlugin({
                     staticDir: path.join(__dirname, 'dist'),
-                    routes: ['/', '/tiles-grid', '/chess-grid', '/list-box', '/google', '/404'],
+                    routes: [
+                        '/', '/tiles-grid', '/chess-grid', '/list-box', '/google-api', '/404',
+                        '/destinations/angel-billabong', '/destinations/broken-beach', '/destinations/kelingking-beach'
+                    ],
                     renderer: new PrerenderSPAPlugin.PuppeteerRenderer({
                         renderAfterTime: 5000
                     })
