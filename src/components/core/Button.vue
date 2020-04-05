@@ -17,12 +17,11 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
-@import "@/assets/css/base.scss";
+@import "@/assets/css/_color.scss";
+@import "@/assets/css/_mixin.scss";
 button {
-    border: 1px solid #ccc;;
-    border-radius: 0;
-    -webkit-border-radius: 0;
-    -moz-border-radius: 0;    
+    border: 1px solid $border-color;
+    @include border-radius(0);
     
     text-transform: uppercase;
     letter-spacing: 0.04em;
@@ -31,7 +30,7 @@ button {
     vertical-align:middle;
     text-decoration:none;
     font-size: 0.8em;
-    color:#807e7e;
+    color: $secondary;
     background-color:inherit;
     text-align:center;
     cursor:pointer;
@@ -41,40 +40,36 @@ button {
     &:focus {
         outline: none;
     }
-    &:hover {
-        color: $bgColor;
-        background-color:#ccc;
-    }
     & span,
     & a {
         display:block;
-        color:#807e7e;
+        color: $secondary;
         padding:8px 16px;
-        @include transition-duration(0.4s);
         text-decoration: none;
         cursor: pointer;
+        @include transition-duration(0.4s);
     }
+    &:hover,
     & > a:hover {
-        color: $bgColor;
-        background-color:#ccc;
+        color: $primary-text;
+        background-color: $secondary;
     }
 }
 
 .button--primary {
-    border: 1px solid $mainColor;
-    color: $mainColor;
+    border: 1px solid $primary;
+    color: $primary-text;
     padding:0px 9px;
-    background-color: $mainColor;
+    background-color: $primary;
     margin-bottom: 16px;
-    span,
-    a {
-        color: $bgColor;
-        &:hover {
-            background-color:$errorColor;
-        }
+    & span,
+    & a {
+        color: $primary-text;
     }
-    &:hover {
-        background-color:$errorColor;
+    &:hover,
+    & > a:hover {
+        color: $primary-text;
+        background-color: $secondary;
     }
 }
 

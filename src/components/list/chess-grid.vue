@@ -52,7 +52,8 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
-@import "@/assets/css/base.scss";
+@import "@/assets/css/_color.scss";
+@import "@/assets/css/_mixin.scss";
 
 .chess-grid {
     padding:0;
@@ -78,7 +79,7 @@ export default {
         &-box {
             width: 50%;
             position: relative;
-            background: $bgColor;
+            background: $background;
             overflow: hidden;
             float: left;
             &::after {

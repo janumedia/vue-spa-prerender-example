@@ -1,11 +1,10 @@
-$mainColor: #FE6601;
-$fontColor: #727171;
-$fontColorLight: #ccc;
-$fontHeaderColor: #7e7c7c;
-$bgColor: #fff;
-$bgSubColor: #f7efef;
-$errorColor: red;
-
+@mixin translate($valueX, $valueY) {
+    -webkit-transform:translate($valueX, $valueY);
+    -moz-transform:translate($valueX, $valueY);
+    -ms-transform:translate($valueX, $valueY);
+    -o-transform:translate($valueX, $valueY);
+    transform:translate($valueX, $valueY);
+}
 @mixin translateX($value) {
     -webkit-transform:translateX($value);
     -moz-transform:translateX($value);
@@ -61,4 +60,9 @@ $errorColor: red;
     -ms-animation: $properties;
     -o-animation: $properties;
     animation: $properties;
+}
+@mixin border-radius($properties...) {
+    border-radius: $properties;
+    -webkit-border-radius: $properties;
+    -moz-border-radius: $properties; 
 }

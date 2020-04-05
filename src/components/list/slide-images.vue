@@ -86,6 +86,8 @@ export default {
         slideIndexChange(info) {
             const img = info.slideItems[info.index].querySelector('img');
             const src = img.getAttribute('data-src');
+            //check if window / tab active / visible
+            //console.log(window.document.visibilityState);
             if(src) {
                 this.tinySlider.pause();
                 LazyImage.loadImage(img);
@@ -111,6 +113,7 @@ export default {
 </script>
 <style lang="scss">
 @import url('https://cdnjs.cloudflare.com/ajax/libs/tiny-slider/2.8.6/tiny-slider.css');
+@import "@/assets/css/_mixin.scss";
 
 .tns-outer {
     position: relative;
@@ -129,28 +132,20 @@ export default {
     > button {
         font-size: 0;
         line-height: 0;
-
+        display: none;
         position: absolute;
         top: calc(50% - 40px);
-
-        display: none;
-
         width: 40px;
         height: 40px;
         padding: 0;
-        -webkit-transform: translate(0, -50%);
-        -ms-transform: translate(0, -50%);
-        transform: translate(0, -50%);
-
         cursor: pointer;
-
         color: transparent;
         border: none;
         outline: none;
         background-color: rgba(52, 44, 44, 0.4);
         opacity: 0.6;
-
         z-index: 1;
+        @include translate(0, -50%);
 
         &:hover {
             background-color: rgba(52, 44, 44, 0.6);
@@ -161,29 +156,22 @@ export default {
         left: 0px;
         background-image: url("/images/assets/icon-expand-white.svg");
         background-size: cover;
-        -webkit-transform: rotate(90deg);
-        -moz-transform: rotate(90deg);
-        -ms-transform: rotate(90deg);
-        -o-transform: rotate(90deg);
-        transform: rotate(90deg);
+        @include rotate(90deg);
     }
 
     > button:nth-child(2){
         right: 0px;
         background-image: url("/images/assets/icon-expand-white.svg");
         background-size: cover;
-        -webkit-transform: rotate(-90deg);
-        -moz-transform: rotate(-90deg);
-        -ms-transform: rotate(-90deg);
-        -o-transform: rotate(-90deg);
-        transform: rotate(-90deg);
+        @include rotate(-90deg);
     }
 }
 
 .slide-images {
     p {
         text-align: left;
-        transition: opacity 0.5s;
+        //transition: opacity 0.5s;
+        @include transition(opacity 0.5s);
         &.hide {
             opacity: 0;
         }

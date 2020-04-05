@@ -140,8 +140,8 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-
-@import "@/assets/css/base.scss";
+@import "@/assets/css/_color.scss";
+@import "@/assets/css/_mixin.scss";
 
 //container
 .tiles-container {
@@ -211,7 +211,7 @@ export default {
     margin-right: 0px;
     margin-bottom: 40px;
     
-    background-color: $bgColor;
+    background-color: $background;
     float: left;
     position: relative;
     

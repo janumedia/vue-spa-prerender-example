@@ -38,6 +38,8 @@
                     <span v-else>{{ item }}</span>
                 </li>
             </ul>
+            <chess-grid v-if="item.chessGrid" :list="item.chessGrid"/>
+            <tiles-grid v-if="item.tilesGrid" :list="item.tilesGrid" :square="item.square" :thumbnailMode="item.thumbnailMode" :numColumns="item.numColumns"/>
             <div v-if="item.slides">
                 <slide-images :list="item.slides"/>
             </div>
@@ -50,10 +52,16 @@
                 <google-review :placeID="item.googleReview.placeID"/>
             </div>
             <div v-if="item.table">
-                <Table 
-                    :headers="item.tableHeaders"
-                    :items="item.table"
-                />
+                <Table>
+                    <template slot="header">
+                        <th v-for="(label, index) in item.tableHeaders" :key="index">{{ label }}</th>
+                    </template>
+                    <template slot="body">
+                        <tr v-for="(item, index) in item.table" :key="index">
+                            <td v-for="(label, subIndex) in item" :key="subIndex">{{ label }}</td>
+                        </tr>
+                    </template>
+                </Table>
             </div>    
             <div v-if="item.note" class="list-box__item-desc"><b>Note:</b> {{ item.note }}</div>
             <br v-if="item.btnLabel">
@@ -70,6 +78,8 @@ export default {
     props: ["list", "last"],
     components: {
         Button, LazyImage, Table,
+        "chess-grid": () => import("@/components/list/chess-grid"),
+        "tiles-grid": () => import("@/components/list/tiles-grid"),
         "slide-images": () => import("@/components/list/slide-images"),
         "google-map": () => import("@/components/vendor/google-map"),
         "google-review": () => import("@/components/vendor/google-review")
@@ -107,10 +117,11 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
-@import "@/assets/css/base.scss";
+@import "@/assets/css/_color.scss";
+@import "@/assets/css/_mixin.scss";
 .list-box {
     &__item {
-        background-color: $bgColor;
+        background-color: $background;
         padding: 20px;
         margin-bottom: 40px;
         position: relative;

@@ -21,10 +21,16 @@
                 <google-review :placeID="item.googleReview.placeID"/>
             </div>
             <div v-if="item.table">
-                <Table 
-                    :headers="item.tableHeaders"
-                    :items="item.table"
-                />
+                <Table>
+                    <template slot="header">
+                        <th v-for="(label, index) in item.tableHeaders" :key="index">{{ label }}</th>
+                    </template>
+                    <template slot="body">
+                        <tr v-for="(item, index) in item.table" :key="index">
+                            <td v-for="(label, subIndex) in item" :key="subIndex">{{ label }}</td>
+                        </tr>
+                    </template>
+                </Table>
             </div>
         </div>
     </section>
@@ -32,12 +38,13 @@
 <script>
 
 import Button from "@/components/core/Button"
+import ToggleButton from "@/components/core/ToggleButton"
 import LazyImage from "@/components/core/LazyImage"
 import Table from "@/components/core/Table"
 
 export default {
     components: {
-        Button, LazyImage, Table,
+        Button, ToggleButton, LazyImage, Table,
         "chess-grid": () => import('@/components/list/chess-grid'),
         "tiles-grid": () => import('@/components/list/tiles-grid'),
         "list-box": () => import('@/components/list/list-box'),
@@ -51,7 +58,7 @@ export default {
 }
 </script>
 <style lang="scss">
-@import "@/assets/css/base.scss";
+@import "@/assets/css/_color.scss";
 
 body section:not(:first-child) {
     padding-top: 40px;
@@ -62,7 +69,7 @@ section {
 }
 
 .section-body {
-    background-color: $bgSubColor;
+    background-color: $background;
 }
 
 .next {
