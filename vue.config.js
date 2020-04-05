@@ -2,7 +2,7 @@ const PrerenderSPAPlugin = require('prerender-spa-plugin');
 let path = require('path');
 module.exports = {
     configureWebpack: config => {
-        //if(process.env.NODE_ENV !== 'production') return;
+        if(process.env.NODE_ENV !== 'production') return;
         return {
             plugins: [
                 new PrerenderSPAPlugin({
