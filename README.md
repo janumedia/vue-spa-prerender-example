@@ -1,4 +1,6 @@
-# vue-web-components
+# vue-SPA-prerender-example
+
+Vue with SPA Prerender example
 
 This repo using Vue-Cli-3 with some modifications.
 
